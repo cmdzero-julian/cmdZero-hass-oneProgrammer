@@ -1,12 +1,12 @@
 {
   "domain": "esp32_ir",
   "name": "ESP32 IR Blaster",
-  "codeowners": ["@REPLACE_WITH_GITHUB_USERNAME"],
+  "codeowners": ["@cmdzero-julian"],
   "config_flow": true,
   "dependencies": ["esphome"],
-  "documentation": "https://github.com/REPLACE_WITH_USERNAME/REPLACE_WITH_REPO",
+  "documentation": "https://github.com/cmdzero-julian/cmdZero-hass-oneProgrammer",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/REPLACE_WITH_USERNAME/REPLACE_WITH_REPO/issues",
+  "issue_tracker": "https://github.com/cmdzero-julian/cmdZero-hass-oneProgrammer/issues",
   "requirements": [],
   "version": "0.1.0"
 }
