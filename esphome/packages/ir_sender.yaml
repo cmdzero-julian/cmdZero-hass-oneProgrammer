@@ -1,0 +1,71 @@
+substitutions:
+  ota_password: "test1234"
+  ap_password: "setup1234"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+logger:
+  level: DEBUG
+
+api:
+  services:
+    - service: send_ir_code
+      variables:
+        code: int[]
+      then:
+        - lambda: |-
+            ESP_LOGI("ir_transmitter", "Sending IR code with %d pulses", code.size());
+            id(last_sent_code) = "";
+            for (size_t i = 0; i < code.size(); i++) {
+              if (i > 0) id(last_sent_code) += ",";
+              id(last_sent_code) += std::to_string(code[i]);
+            }
+            ESP_LOGI("ir_transmitter", "Code: %s", id(last_sent_code).c_str());
+        - remote_transmitter.transmit_raw:
+            code: !lambda "return code;"
+            carrier_frequency: 38kHz
+
+ota:
+  - platform: esphome
+    password: ${ota_password}
+
+wifi:
+  ap:
+    ssid: ${ap_ssid}
+    password: ${ap_password}
+
+captive_portal:
+
+web_server:
+  port: 80
+
+# --- IR Transmitter ---
+remote_transmitter:
+  pin: GPIO5
+  carrier_duty_percent: 50%
+
+globals:
+  - id: last_sent_code
+    type: std::string
+    restore_value: false
+    initial_value: '""'
+
+text_sensor:
+  - platform: template
+    name: "Last Sent Code"
+    id: last_sent_code_display
+    icon: mdi:remote-tv
+    update_interval: 1s
+    lambda: |-
+      return id(last_sent_code);
+
+button:
+  - platform: restart
+    name: "Restart"

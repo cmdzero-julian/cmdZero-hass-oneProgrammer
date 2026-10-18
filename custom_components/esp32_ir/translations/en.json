@@ -1,0 +1,65 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up ESP32 IR Blaster",
+        "description": "This integration calls services on and listens for events from devices already added via the ESPHome integration. No connection details are needed here."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "ESP32 IR Blaster is already configured."
+    }
+  },
+  "services": {
+    "learn_code": {
+      "name": "Learn code",
+      "description": "Arms the listener for the next IR code captured by a receiver and saves it under a name.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Name to save the captured code under."
+        },
+        "receiver_device_id": {
+          "name": "Receiver device",
+          "description": "Limit the capture to a specific receiver device."
+        },
+        "timeout": {
+          "name": "Timeout",
+          "description": "Seconds to wait for a capture before giving up."
+        },
+        "overwrite": {
+          "name": "Overwrite",
+          "description": "Replace an existing code with the same name."
+        }
+      }
+    },
+    "send_code": {
+      "name": "Send code",
+      "description": "Sends a previously saved IR code to one or more sender devices.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Name of the saved code to send."
+        },
+        "targets": {
+          "name": "Target devices",
+          "description": "ESPHome sender device(s) to transmit the code from."
+        }
+      }
+    },
+    "delete_code": {
+      "name": "Delete code",
+      "description": "Deletes a saved IR code.",
+      "fields": {
+        "name": {
+          "name": "Name",
+          "description": "Name of the saved code to delete."
+        }
+      }
+    },
+    "list_codes": {
+      "name": "List codes",
+      "description": "Returns all saved IR codes and their metadata."
+    }
+  }
+}

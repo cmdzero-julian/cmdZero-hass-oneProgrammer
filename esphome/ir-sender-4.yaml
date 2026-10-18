@@ -1,0 +1,11 @@
+# =============================================================================
+# IR TOOL - ESPHome Configuration (Waveshare ESP32-C3 Mini)
+# Sender device — used for actual IR transmit jobs.
+# =============================================================================
+substitutions:
+  name: ir-sender-4
+  friendly_name: "IR Sender 4"
+  ap_ssid: "IR Sender 4 Setup"
+
+packages:
+  ir_sender: !include packages/ir_sender.yaml

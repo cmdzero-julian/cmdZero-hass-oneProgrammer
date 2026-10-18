@@ -1,0 +1,72 @@
+substitutions:
+  ota_password: "test1234"
+  ap_password: "setup1234"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+logger:
+
+api:
+
+ota:
+  - platform: esphome
+    password: ${ota_password}
+
+wifi:
+  ap:
+    ssid: ${ap_ssid}
+    password: ${ap_password}
+
+captive_portal:
+
+web_server:
+  port: 80
+
+# --- IR Receiver ---
+remote_receiver:
+  id: ir_receiver
+  pin:
+    number: GPIO5
+    inverted: true
+    mode:
+      input: true
+      pullup: true
+  dump: raw
+  filter: 50us
+  idle: 10ms
+  tolerance: 25%
+  on_raw:
+    then:
+      - lambda: |-
+          std::string result = "";
+          for (int i = 0; i < x.size(); i++) {
+            if (i > 0) result += ",";
+            result += std::to_string(x[i]);
+          }
+          id(captured_code) = result;
+          ESP_LOGI("ir_receiver", "Captured: %s", result.c_str());
+      # Reports the capture to Home Assistant. Event data has no length
+      # limit (unlike entity state, which gets truncated at 255 chars),
+      # which matters for long raw IR dumps.
+      - homeassistant.event:
+          event: esphome.esp32_ir_code_captured
+          data:
+            device: ${name}
+            code: !lambda 'return id(captured_code);'
+
+globals:
+  - id: captured_code
+    type: std::string
+    restore_value: false
+    initial_value: 'std::string("")'
+
+button:
+  - platform: restart
+    name: "Restart"

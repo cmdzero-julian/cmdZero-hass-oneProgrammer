@@ -1,0 +1,76 @@
+learn_code:
+  name: Learn code
+  description: >-
+    Arms the listener for the next IR code captured by a receiver and
+    saves it under a name. Point your remote at the receiver and press
+    the button right after calling this.
+  fields:
+    name:
+      name: Name
+      description: Name to save the captured code under.
+      required: true
+      example: "tv_power"
+      selector:
+        text:
+    receiver_device_id:
+      name: Receiver device
+      description: >-
+        Limit the capture to a specific receiver device. If omitted, the
+        next capture from any receiver is used.
+      required: false
+      selector:
+        device:
+          integration: esphome
+    timeout:
+      name: Timeout
+      description: Seconds to wait for a capture before giving up.
+      required: false
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 60
+          unit_of_measurement: seconds
+    overwrite:
+      name: Overwrite
+      description: Replace an existing code with the same name.
+      required: false
+      default: false
+      selector:
+        boolean:
+
+send_code:
+  name: Send code
+  description: Sends a previously saved IR code to one or more sender devices.
+  fields:
+    name:
+      name: Name
+      description: Name of the saved code to send.
+      required: true
+      example: "tv_power"
+      selector:
+        text:
+    targets:
+      name: Target devices
+      description: ESPHome sender device(s) to transmit the code from.
+      required: true
+      selector:
+        device:
+          integration: esphome
+          multiple: true
+
+delete_code:
+  name: Delete code
+  description: Deletes a saved IR code.
+  fields:
+    name:
+      name: Name
+      description: Name of the saved code to delete.
+      required: true
+      example: "tv_power"
+      selector:
+        text:
+
+list_codes:
+  name: List codes
+  description: Returns all saved IR codes and their metadata.

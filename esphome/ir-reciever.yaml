@@ -1,0 +1,11 @@
+# =============================================================================
+# IR TOOL - ESPHome Configuration (Waveshare ESP32-C3 Mini)
+# Receiver device — used for learning/capturing IR codes.
+# =============================================================================
+substitutions:
+  name: ir-reciever
+  friendly_name: "IR Reciever"
+  ap_ssid: "IR Reciever"
+
+packages:
+  ir_receiver: !include packages/ir_receiver.yaml
